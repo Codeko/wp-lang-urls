@@ -2,16 +2,14 @@
 /*
   Plugin Name: NHow Lang URL Manager
   Description: Plugin that manages language URLs for NHow
-  Version: 1.0.0
+  Version: 1.5.0
 
-Es necesario incluir en wp-config.php la siguiente línea:
+  Es necesario incluir en wp-config.php la siguiente línea:
 
-include_once(WP_CONTENT_FOLDERNAME . '/plugins/nhow-lang-urls/reformat_urls.php');
+  include_once(WP_CONTENT_FOLDERNAME . '/plugins/nhow-lang-urls/reformat_urls.php');
 
-Esto debe estar después de definir WP_CONTENT_FOLDERNAME,
-pero antes de la línea "require_once(ABSPATH . 'wp-settings.php');"
-
-
+  Esto debe estar después de definir WP_CONTENT_FOLDERNAME,
+  pero antes de la línea "require_once(ABSPATH . 'wp-settings.php');"
  */
 
 require_once("constants.php");
@@ -21,6 +19,10 @@ class NHowLangUrls {
 
     function __construct()
     {
+        if ( is_admin() && !$this::files_are_edited()) {
+            add_action( 'admin_notices', [$this,'admin_notices']);
+        }
+
         if (AR_IS_ARGENTINE == true){
             ar_is_argentine_filter();
         }
@@ -96,6 +98,31 @@ class NHowLangUrls {
         return $url;
     }
 
+    /*
+     * Check if wp-config.php and index.php has have been edited as necessary
+     */
+    function files_are_edited(){
+        $f_config = ABSPATH . "wp-config.php";
+        $s_config = '/plugins/nhow-lang-urls/reformat_urls.php';
+        $f_index = ABSPATH . "index.php";
+        $s_index = "nh_replace_urls";
+        return self::check_file_adition($f_config, $s_config) && self::check_file_adition($f_index, $s_index);
+    }
+
+    static function check_file_adition($file, $string){
+        return strpos(file_get_contents($file), $string) != false;
+    }
+
+    static function admin_notices(){
+        $notice = <<<EOT
+    <div class="notice notice-error">
+        <p><strong>NHow Lang URL Manager:</strong> No se ha añadido el código necesario en "index.php" y/o "wp-config.php".</p>
+    </div>
+EOT;
+        echo $notice;
+    }
+
 }
 
 new NHowLangUrls();
+
