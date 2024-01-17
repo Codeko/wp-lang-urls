@@ -55,7 +55,7 @@ class ReformatUrls {
                  * la sobrescribimos para que WP crea que es /YYYY/XX...
                  */
                 $path_prefix = "/" . $path_parts[1] . "/" . $path_parts[0];
-                $_SERVER["REQUEST_URI"] = $path_prefix . substr($url_path, strlen($path_prefix));
+                $_SERVER["REQUEST_URI"] = $path_prefix . substr($url_path, strlen($path_prefix)) . "/";
             }
 
             # Si contiene /? y el metodo es GET, se le quita esa barra
@@ -97,7 +97,7 @@ class ReformatUrls {
              * la sobrescribimos para que WP crea que es /YYYY/XX...
              */
             $path_prefix = "/" . $path_parts[1] . "/" . $path_parts[0];
-            $_SERVER["REQUEST_URI"] = $path_prefix . substr($url_path, strlen($path_prefix));
+            $_SERVER["REQUEST_URI"] = $path_prefix . substr($url_path, strlen($path_prefix)) . "/";
 
         }
 
