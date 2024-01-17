@@ -27,6 +27,7 @@ con el idioma delante.
 
 - NH-Corporate
 - NHPro
+- NH Coming Soon
 
 
 ## Componetnes:
