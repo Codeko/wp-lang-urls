@@ -57,7 +57,6 @@ class WPLangUrls {
         return $this::city_lang_to_lang_city($url);
     }
 
-
     /*
      * Helper function that converts URLs
      * from type SCHEMA://DOMAIN/XXXX/YY
@@ -79,17 +78,33 @@ class WPLangUrls {
 
     public static function reformat_urls_on_page($page_text) {
         if (!is_admin()) {
-
-            $separator = "~";
-
-            $hotels_pattern = "(" . implode("|", SITE_SLUGS_LIST) . ")";
-            $languages_pattern = "(" . implode("|", LANGUAGE_LIST) . ")";
-
-            $pattern = $separator . $_SERVER['HTTP_HOST'] . "/" . $hotels_pattern . "/" . $languages_pattern . $separator;
-            $replacement = $_SERVER['HTTP_HOST'] . "/\\2/\\1\\3";
-            return preg_replace($pattern, $replacement, $page_text);
+            $page_text = self::invert_lang_and_blog_from_urls_on_text($page_text);
+            $page_text = self::remove_slashes_from_urls_end_on_text($page_text);
         }
         return $page_text;
+    }
+
+    public static function invert_lang_and_blog_from_urls_on_text($text){
+        $separator = "~";
+
+        $hotels_pattern = "(" . implode("|", SITE_SLUGS_LIST) . ")";
+        $languages_pattern = "(" . implode("|", LANGUAGE_LIST) . ")";
+
+        $pattern = $separator . $_SERVER['HTTP_HOST'] . "/" . $hotels_pattern . "/" . $languages_pattern . $separator;
+        $replacement = $_SERVER['HTTP_HOST'] . "/\\2/\\1\\3";
+        return preg_replace($pattern, $replacement, $text);
+
+    }
+
+    public static function remove_slashes_from_urls_end_on_text($text){
+        $separator = "~";
+
+        $hotels_pattern = "(" . implode("|", SITE_SLUGS_LIST) . ")";
+        $languages_pattern = "(" . implode("|", LANGUAGE_LIST) . ")";
+
+        $patern2 = $separator . "(" . $_SERVER['HTTP_HOST'] . "/" . $languages_pattern . "/" . $hotels_pattern   . "[a-zA-Z0-9\/\-_]*)/([\"'])" . $separator;
+        $replacement2 = "\\1\\4";
+        return preg_replace($patern2, $replacement2, $text);
     }
 
     //Añadimos el slash al final de una URL
