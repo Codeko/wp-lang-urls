@@ -23,7 +23,7 @@ class ReformatUrls {
         $url_path = $_SERVER["REQUEST_URI"];
         $path_parts = explode("/",ltrim(parse_url($url_path,PHP_URL_PATH),"/"));
         $is_admin = strpos($url_path, "wp-admin");
-        $is_login = strpos($url_path, "wp-login");
+        $is_login = strpos($url_path, WP_LOGIN_DIRECTORY);
         $is_wp_json = strpos($url_path, "wp-json");
 
         $path_is_hotel_and_lang = count($path_parts) > 1 && in_array($path_parts[0], SITE_SLUGS_LIST) && in_array($path_parts[1], LANGUAGE_LIST);
@@ -54,7 +54,7 @@ class ReformatUrls {
                 }
                 header("Location: " . rtrim($complete_url, "/"), true, 301);
                 exit();
-            } else if($path_is_hotel_and_lang) {
+            } elseif($path_is_hotel_and_lang) {
                 self::redirect_to_lang_hotel($path_parts, $url_path, $debug);
 
             } elseif ($path_is_lang_and_hotel) {
@@ -105,6 +105,21 @@ class ReformatUrls {
                 echo "request: " . $_SERVER["REQUEST_URI"] . "<br>";
                 echo "Not redirect, go to WP";
             }
+        }
+        if($debug){
+            echo "<br>Is admin, login or wp_json:";
+            if ($is_admin) {
+                echo "is admin<br>";
+            }
+            if ($is_login) {
+                echo "is login <br>";
+            }
+            if ($is_wp_json) {
+                echo "is wp_json<br>";
+            }
+
+            echo "request: " . $_SERVER["REQUEST_URI"] . "<br>";
+            echo "Not redirect, go to WP";
         }
     }
 

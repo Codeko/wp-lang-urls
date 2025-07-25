@@ -44,11 +44,17 @@ class WPLangUrls {
             # Remove oembed headers
             remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 
-            //Añadimos el slash al final de la url del hide login
-            add_filter( 'wps_hide_login_home_url', [$this, 'add_final_slash_to_url'], 11, 1);
+            # fix for wps hide login URLs
+            add_filter( 'wps_hide_login_home_url', [$this, 'wps_hide_login_home_url_filter'] );
         }
     }
 
+    /*
+     * filter for force WPS Hide Login plugin path without language
+    */
+    function wps_hide_login_home_url_filter( $url) {
+        return rtrim(get_option('home'), '/') . "/";
+    }
 
     /*
      * generic filter for reformat URLs
