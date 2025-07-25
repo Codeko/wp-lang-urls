@@ -27,7 +27,7 @@ class WPLangUrls {
             }
 
             # Auto-update from GitHub
-            add_action( 'init', [$this,'auto_update_plugin']);
+            # add_action( 'init', [$this,'auto_update_plugin']);
         }
         else {
             add_filter('wpml_ls_language_url', [ $this, 'alternate_language_url' ], 10, 2);
