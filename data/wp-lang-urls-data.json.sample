@@ -1,0 +1,6 @@
+{
+  "login_directory": "hide_login",
+  "ignore_urls": [],
+  "slugs": ["minor-pro"],
+  "langs": ["en","es","de","nl","it","fr","pt","co","mx","ar"]
+}
