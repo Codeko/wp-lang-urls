@@ -29,13 +29,21 @@ class ReformatUrls {
         $path_is_hotel_and_lang = count($path_parts) > 1 && in_array($path_parts[0], SITE_SLUGS_LIST) && in_array($path_parts[1], LANGUAGE_LIST);
         $path_is_lang_and_hotel = count($path_parts) > 1 && in_array($path_parts[0], LANGUAGE_LIST) && in_array($path_parts[1],SITE_SLUGS_LIST);
         $path_is_only_hotel = count($path_parts) == 1 && in_array($path_parts[0], SITE_SLUGS_LIST);
+
+        $path_is_only_lang = count($path_parts) == 1 && in_array($path_parts[0], LANGUAGE_LIST);
+        $path_is_lang_but_not_hotel = count($path_parts) > 1 && in_array($path_parts[0], LANGUAGE_LIST) && !in_array($path_parts[1],SITE_SLUGS_LIST);
+        $path_is_not_lang_not_hotel = count($path_parts) == 1 && !in_array($path_parts[0], LANGUAGE_LIST) && !in_array($path_parts[0], SITE_SLUGS_LIST);
+
         if($debug){
             print_r([
                 "url_path"=>$url_path,
                 "path_parts"=>$path_parts,
                 "path_is_hotel_and_lang"=>$path_is_hotel_and_lang,
                 "path_is_lang_and_hotel"=>$path_is_lang_and_hotel,
-                "path_is_only_hotel"=>$path_is_only_hotel
+                "path_is_only_hotel"=>$path_is_only_hotel,
+                "path_is_only_lang"=>$path_is_only_lang,
+                "path_is_not_lang_not_hotel" =>$path_is_not_lang_not_hotel,
+                "path_is_lang_but_not_hotel" =>$path_is_lang_but_not_hotel,
             ]);
         }
         if (!$is_admin && !$is_login && !$is_wp_json)  {
@@ -80,6 +88,11 @@ class ReformatUrls {
                 if($debug){
                     echo "path_is_lang_and_hotel set REQUEST_URI → ". $_SERVER["REQUEST_URI"]."<br/>";
                 }
+            } elseif ($path_is_lang_but_not_hotel) {
+                //$_SERVER["REQUEST_URI"] =  rtrim($_SERVER["REQUEST_URI"], "/")."/";
+
+            } elseif ($path_is_only_lang) {
+                //$_SERVER["REQUEST_URI"] =  rtrim($_SERVER["REQUEST_URI"], "/")."/";
             }
 
             # Si contiene /? y el metodo es GET, se le quita esa barra
