@@ -44,10 +44,23 @@ class WPLangUrls {
             # Remove oembed headers
             remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 
+            //Añadimos el slash al final de la url del hide login
+            add_filter( 'wps_hide_login_home_url', [$this, 'add_final_slash_to_url'], 11, 1);
+
+            # Remove trailing slash from canonical
+            add_filter( 'wpseo_canonical', [$this, 'remove_trailing_slash_from_canonical'], 20, 1 );
+
             # fix for wps hide login URLs
             add_filter( 'wps_hide_login_home_url', [$this, 'wps_hide_login_home_url_filter'] );
         }
     }
+
+    function remove_trailing_slash_from_canonical( $canonical ) {
+        # ¿why this URL is urlencoded?
+        $canonical = urldecode($canonical);
+        return rtrim( $canonical, '/' ) ;
+    }
+
 
     /*
      * filter for force WPS Hide Login plugin path without language
