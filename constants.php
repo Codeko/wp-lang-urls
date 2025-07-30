@@ -28,8 +28,14 @@ define("DEFAULT_URL_IGNORE_LIST", []);
 define("JSON_DIR_PATH",  __DIR__  . '/data');
 define("JSON_FILE_PATH", JSON_DIR_PATH  . '/wp-lang-urls-data.json');
 
-$json_data = [];
+$permalink_structure = getenv('WP_LANG_PERMALINK_STRUCTURE');
+if ($permalink_structure) {
+    define("DEFAULT_PERMALINK_STRUCTURE", $hotel_slug_list_string);
+} else {
+    define("DEFAULT_PERMALINK_STRUCTURE", '/%postname%/');
+}
 
+$json_data = [];
 
 # Se extraen valores del JSON; si no existe, se usan los valores por defecto
 
@@ -61,4 +67,10 @@ if (isset($json_data['ignore_urls']) && count($json_data['ignore_urls'])) {
     define("URL_IGNORE_LIST", $json_data['ignore_urls']);
 } else {
     define("URL_IGNORE_LIST", DEFAULT_URL_IGNORE_LIST);
+}
+
+if (isset($json_data['permalink_structure']) && $json_data['permalink_structure']) {
+    define("PERMALINK_STRUCTURE", $json_data['permalink_structure']);
+} else {
+    define("PERMALINK_STRUCTURE", DEFAULT_PERMALINK_STRUCTURE);
 }

@@ -15,7 +15,7 @@ class WPLangUrls {
 
         add_action( 'init', function() {
             global $wp_rewrite;
-            $wp_rewrite->set_permalink_structure( '/%postname%/' );
+            $wp_rewrite->set_permalink_structure( PERMALINK_STRUCTURE );
         } );
 
         if ( is_admin() ) {

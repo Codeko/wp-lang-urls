@@ -35,6 +35,7 @@ class AdminPage
         $langs_default = implode("\n", DEFAULT_LANGUAGE_LIST);
         $ignore_urls_default = ""; #implode("\n", DEFAULT_URL_IGNORE_LIST);
         $login_directory_default = DEFAULT_WP_LOGIN_DIRECTORY;
+        $permalink_structure_default = DEFAULT_PERMALINK_STRUCTURE;
 
         $json_data = $this->get_data_from_json();
 
@@ -42,6 +43,7 @@ class AdminPage
         $langs_value = (isset($json_data['langs'])) ? implode("\n", $json_data['langs']) : "";
         $ignore_urls_value = (isset($json_data['ignore_urls'])) ? implode("\n", $json_data['ignore_urls']) : "";
         $login_directory_value = (isset($json_data['login_directory'])) ? $json_data['login_directory'] : "";
+        $permalink_structure_value = (isset($json_data['permalink_structure'])) ? $json_data['permalink_structure'] : "";
 
         if ($this->is_wps_hideLogin_active()) {
             $whl_page = (get_option('whl_page')) ? "(" . __("must be", 'wp_lang_urls') . " " . get_option('whl_page') . ")" : "";
@@ -96,6 +98,18 @@ class AdminPage
                                    readonly
                                    value="<?php echo esc_attr($login_directory_default); ?>" class="regular-text"/></td>
                     </tr>
+                    <tr>
+                        <th scope="row"><label
+                                    for="permalink_structure"><?php _e('Permalink structure:', 'wp_lang_urls'); ?></label>
+                        </th>
+                        <td><input type="text" id="permalink_structure"
+                                   name="permalink_structure"
+                                   value="<?php echo esc_attr($permalink_structure_value); ?>" class="regular-text"/></td>
+                        <td><input type="text" id="permalink_structure_ro"
+                                   name="permalink_structure_ro"
+                                   readonly
+                                   value="<?php echo esc_attr($permalink_structure_default); ?>" class="regular-text"/></td>
+                    </tr>
                 </table>
                 <?php submit_button(__('Save Changes', 'wp_lang_urls')); ?>
             </form>
@@ -137,6 +151,7 @@ class AdminPage
             $langs = self::filter_input($_POST['langs']);
             $ignore_urls = self::filter_input($_POST['ignore_urls']);
             $login_directory = self::filter_input($_POST['login_directory']);
+            $permalink_structure = self::filter_input($_POST['permalink_structure']);
 
             if ($slugs != "" || $langs != "" || $ignore_urls != "" || $login_directory != "") {
 
@@ -145,6 +160,7 @@ class AdminPage
                     'langs' => explode("\n", $langs),
                     'ignore_urls' => explode("\n", $ignore_urls),
                     'login_directory' => $login_directory,
+                    'permalink_structure' => $permalink_structure,
                     'timestamp' => time()
                 ];
 
