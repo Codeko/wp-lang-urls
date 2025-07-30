@@ -6,6 +6,7 @@
  */
 
 require_once("constants.php");
+require_once("admin_page.php");
 
 class WPLangUrls {
 
