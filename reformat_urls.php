@@ -11,7 +11,11 @@ class ReformatUrls {
 
     public static function process_url_site() {
         $debug = self::is_debug_active();
-
+        /*
+        if (in_array($_SERVER['REQUEST_URI'], URL_IGNORE_LIST)) {
+            return;
+        }
+        */
         /**
          * Si la URL tiene el idioma antes que el sitio, la dejamos como está,
          * pero sobrescribimos la variable de entorno $_SERVER["REQUEST_URI"] para que WPML la interprete correctamente.

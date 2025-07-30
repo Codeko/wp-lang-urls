@@ -12,8 +12,8 @@ class AdminPage
         //add_menu_page(
         add_submenu_page(
             'options-general.php',
-            __('WP Lang URLS configuration', 'wp_lang_urls'),
-            __('WP Lang URLS configuration', 'wp_lang_urls'),
+            __('WP Lang URLS', 'wp_lang_urls'),
+            __('WP Lang URLS', 'wp_lang_urls'),
             'manage_options',
             'wp-lang-url-config',
             [$this, 'form_page'],
@@ -79,7 +79,7 @@ class AdminPage
                                       cols="33"><?php echo $langs_default; ?></textarea></td>
                     </tr>
                     <tr>
-                        <th scope="row"><label for="ignore_urls"><?php _e('Ignore URLs:', 'wp_lang_urls'); ?></label>
+                        <th scope="row"><label for="ignore_urls"><?php _e('Ignore URLs:', 'wp_lang_urls'); ?> (currently not in use)</label>
                         </th>
                         <td><textarea id="ignore_urls" name="ignore_urls" rows="5"
                                       cols="33"><?php echo $ignore_urls_value; ?></textarea></td>
