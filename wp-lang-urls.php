@@ -2,7 +2,7 @@
 /*
   Plugin Name: WP Lang URL Manager
   Description: Plugin that manages language URLs
-  Version: 2.0.0
+  Version: 2.1.0
  */
 
 require_once("constants.php");
