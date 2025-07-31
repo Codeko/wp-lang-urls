@@ -28,7 +28,7 @@ class WPLangUrls {
             }
 
             # Auto-update from GitHub
-            # add_action( 'init', [$this,'auto_update_plugin']);
+            add_action( 'init', [$this,'auto_update_plugin']);
         }
         else {
             add_filter('wpml_ls_language_url', [ $this, 'alternate_language_url' ], 10, 2);
@@ -61,7 +61,6 @@ class WPLangUrls {
         $canonical = urldecode($canonical);
         return rtrim( $canonical, '/' ) ;
     }
-
 
     /*
      * filter for force WPS Hide Login plugin path without language
@@ -137,7 +136,9 @@ class WPLangUrls {
 
     function auto_update_plugin()
     {
-        include_once('updater.php');
+        if (!class_exists( 'WP_GitHub_Updater' ) ){
+            include_once('updater.php');
+        }
         define( 'WP_GITHUB_FORCE_UPDATE', true );
 
         if (is_admin()) { // note the use of is_admin() to double check that this is happening in the admin
@@ -202,4 +203,3 @@ EOT;
 }
 
 new WPLangUrls();
-
