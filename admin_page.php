@@ -100,7 +100,8 @@ class AdminPage
                     </tr>
                     <tr>
                         <th scope="row"><label
-                                    for="permalink_structure"><?php _e('Permalink structure:', 'wp_lang_urls'); ?></label>
+                                    for="permalink_structure"><?php _e('Permalink structure:', 'wp_lang_urls'); ?></label><br>
+                            <small><?php _e('(must end with /)', 'wp_lang_urls'); ?></small>
                         </th>
                         <td><input type="text" id="permalink_structure"
                                    name="permalink_structure"
@@ -151,7 +152,8 @@ class AdminPage
             $langs = self::filter_input($_POST['langs']);
             $ignore_urls = self::filter_input($_POST['ignore_urls']);
             $login_directory = self::filter_input($_POST['login_directory']);
-            $permalink_structure = self::filter_input($_POST['permalink_structure']);
+
+            $permalink_structure = rtrim(self::filter_input($_POST['permalink_structure']), "/") . "/";
 
             if ($slugs != "" || $langs != "" || $ignore_urls != "" || $login_directory != "") {
 
