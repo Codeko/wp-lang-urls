@@ -8,6 +8,8 @@
 require_once("constants.php");
 require_once("admin_page.php");
 
+use PolaCDK\PolaCDK_Control;
+
 class WPLangUrls {
 
     function __construct()
@@ -136,12 +138,7 @@ class WPLangUrls {
 
     function auto_update_plugin()
     {
-        if (!class_exists( 'WP_GitHub_Updater' ) ){
-            include_once('updater.php');
-        }
-        define( 'WP_GITHUB_FORCE_UPDATE', true );
-
-        if (is_admin()) { // note the use of is_admin() to double check that this is happening in the admin
+        if (class_exists('\PolaCDK\PolaCDK_Control') ) {
             $config = array(
                 'slug' => plugin_basename(__FILE__), // this is the slug of your plugin
                 'proper_folder_name' => 'wp-lang-urls', // this is the name of the folder your plugin lives in
@@ -154,7 +151,7 @@ class WPLangUrls {
                 'tested' => '6.4.1', // which version of WordPress is your plugin tested up to?
                 'readme' => 'README.md', // which file to use as the readme for the version number
             );
-            new WP_GitHub_Updater($config);
+            PolaCDK_Control::plugin_updater($config);
         }
     }
 
