@@ -25,8 +25,12 @@ define("DEFAULT_WP_LOGIN_DIRECTORY", $wp_login_directory);
 
 define("DEFAULT_URL_IGNORE_LIST", []);
 
-define("JSON_DIR_PATH",  __DIR__  . '/data');
+define("JSON_DIR_PATH",  WP_CONTENT_DIR . "/uploads/wp-lang-urls-data");
 define("JSON_FILE_PATH", JSON_DIR_PATH  . '/wp-lang-urls-data.json');
+
+if (!file_exists(JSON_DIR_PATH)) {
+    mkdir(JSON_DIR_PATH, 0755, true);
+}
 
 $permalink_structure = getenv('WP_LANG_PERMALINK_STRUCTURE');
 if ($permalink_structure) {
