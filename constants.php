@@ -17,7 +17,7 @@ define("WP_LANG_URL_HARDCODED_CONFIG", [
 define("WP_LANG_URL_ENV_CONFIG", [
     "langs" => (getenv('WP_LANG_LANGUAGE_LIST'))? explode(",", getenv('WP_LANG_LANGUAGE_LIST')) : [],
     "slugs" => (getenv('WP_LANG_SITE_SLUGS_LIST'))? explode(",", getenv('WP_LANG_SITE_SLUGS_LIST')) : [],
-    "login_directory" => getenv('WP_LANG_LOGIN_DIRECTOR'),
+    "login_directory" => getenv('WP_LANG_LOGIN_DIRECTORY'),
     "ignore_urls" => (getenv('WP_LANG_URL_IGNORE_LIST'))? explode(",", getenv('WP_LANG_URL_IGNORE_LIST')) : [],
     "permalink_structure" => getenv('WP_LANG_PERMALINK_STRUCTURE')]);
 
