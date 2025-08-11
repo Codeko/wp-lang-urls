@@ -27,16 +27,16 @@ class ReformatUrls {
         $url_path = $_SERVER["REQUEST_URI"];
         $path_parts = explode("/",ltrim(parse_url($url_path,PHP_URL_PATH),"/"));
         $is_admin = strpos($url_path, "wp-admin");
-        $is_login = strpos($url_path, WP_LOGIN_DIRECTORY);
+        $is_login = strpos($url_path, WP_LANG_URL_CONFIG["login_directory"]);
         $is_wp_json = strpos($url_path, "wp-json");
 
-        $path_is_hotel_and_lang = count($path_parts) > 1 && in_array($path_parts[0], SITE_SLUGS_LIST) && in_array($path_parts[1], LANGUAGE_LIST);
-        $path_is_lang_and_hotel = count($path_parts) > 1 && in_array($path_parts[0], LANGUAGE_LIST) && in_array($path_parts[1],SITE_SLUGS_LIST);
-        $path_is_only_hotel = count($path_parts) == 1 && in_array($path_parts[0], SITE_SLUGS_LIST);
+        $path_is_hotel_and_lang = count($path_parts) > 1 && in_array($path_parts[0], WP_LANG_URL_CONFIG["slugs"]) && in_array($path_parts[1], WP_LANG_URL_CONFIG["langs"]);
+        $path_is_lang_and_hotel = count($path_parts) > 1 && in_array($path_parts[0], WP_LANG_URL_CONFIG["langs"]) && in_array($path_parts[1],WP_LANG_URL_CONFIG["slugs"]);
+        $path_is_only_hotel = count($path_parts) == 1 && in_array($path_parts[0], WP_LANG_URL_CONFIG["slugs"]);
 
-        $path_is_only_lang = count($path_parts) == 1 && in_array($path_parts[0], LANGUAGE_LIST);
-        $path_is_lang_but_not_hotel = count($path_parts) > 1 && in_array($path_parts[0], LANGUAGE_LIST) && !in_array($path_parts[1],SITE_SLUGS_LIST);
-        $path_is_not_lang_not_hotel = count($path_parts) == 1 && !in_array($path_parts[0], LANGUAGE_LIST) && !in_array($path_parts[0], SITE_SLUGS_LIST);
+        $path_is_only_lang = count($path_parts) == 1 && in_array($path_parts[0], WP_LANG_URL_CONFIG["langs"]);
+        $path_is_lang_but_not_hotel = count($path_parts) > 1 && in_array($path_parts[0], WP_LANG_URL_CONFIG["langs"]) && !in_array($path_parts[1],WP_LANG_URL_CONFIG["slugs"]);
+        $path_is_not_lang_not_hotel = count($path_parts) == 1 && !in_array($path_parts[0], WP_LANG_URL_CONFIG["langs"]) && !in_array($path_parts[0], WP_LANG_URL_CONFIG["slugs"]);
 
         if($debug){
             print_r([
@@ -56,7 +56,7 @@ class ReformatUrls {
                  * Si no hay idioma incluido en la url
                  * Incluimos idioma por defecto y redireccionamos a esta con formato /YY/XXXX...
                  */
-                array_unshift($path_parts, DEFAULT_LANGUAGE);
+                array_unshift($path_parts, WP_LANG_URL_CONFIG["langs"][0]);
                 $path_prefix = "/" . $path_parts[0] . "/" . $path_parts[1];
                 $new_url_path = $path_prefix . '/' . substr($url_path, strlen($path_prefix) - 2);
                 $complete_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$new_url_path";

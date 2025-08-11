@@ -1,0 +1,4 @@
+input.value_in_use, textarea.value_in_use {
+    background-color: #aaffaa;
+    width: 25em;
+}

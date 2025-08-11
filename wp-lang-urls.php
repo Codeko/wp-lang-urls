@@ -17,10 +17,13 @@ class WPLangUrls {
 
         add_action( 'init', function() {
             global $wp_rewrite;
-            $wp_rewrite->set_permalink_structure( PERMALINK_STRUCTURE );
+            $wp_rewrite->set_permalink_structure(WP_LANG_URL_CONFIG["permalink_structure"]);
         } );
 
         if ( is_admin() ) {
+
+            add_action( 'admin_enqueue_scripts', [$this,'enqueue_admin_style']);
+
             if (!$this::files_are_edited()) {
                 add_action( 'admin_notices', [$this,'files_admin_notices']);
             }
@@ -58,6 +61,11 @@ class WPLangUrls {
         }
     }
 
+    function enqueue_admin_style() {
+        wp_register_style( 'wp-lang-url', plugin_dir_url( __FILE__ ) . 'assets/css/styles.css', [], '1.5' );
+        wp_enqueue_style( 'wp-lang-url' );
+    }
+
     function remove_trailing_slash_from_canonical( $canonical ) {
         # ¿why this URL is urlencoded?
         $canonical = urldecode($canonical);
@@ -90,7 +98,7 @@ class WPLangUrls {
         $url_head = $url_component["scheme"] . "://" . $url_component["host"];
 
         $path_parts = explode("/", ltrim($url_component["path"], "/"));
-        if (count($path_parts) > 1 && strlen($path_parts[1]) == 2 && in_array($path_parts[0],SITE_SLUGS_LIST)) {
+        if (count($path_parts) > 1 && strlen($path_parts[1]) == 2 && in_array($path_parts[0],WP_LANG_URL_CONFIG["slugs"])) {
             $prefix = $url_head . "/" . $path_parts[1] . "/" . $path_parts[0];
             $url = $prefix . substr($url, strlen($prefix));
         }
@@ -108,8 +116,8 @@ class WPLangUrls {
     public static function invert_lang_and_blog_from_urls_on_text($text){
         $separator = "~";
 
-        $hotels_pattern = "(" . implode("|", SITE_SLUGS_LIST) . ")";
-        $languages_pattern = "(" . implode("|", LANGUAGE_LIST) . ")";
+        $hotels_pattern = "(" . implode("|", WP_LANG_URL_CONFIG["slugs"]) . ")";
+        $languages_pattern = "(" . implode("|", WP_LANG_URL_CONFIG["langs"]) . ")";
 
         $pattern = $separator . $_SERVER['HTTP_HOST'] . "/" . $hotels_pattern . "/" . $languages_pattern . $separator;
         $replacement = $_SERVER['HTTP_HOST'] . "/\\2/\\1\\3";
@@ -120,8 +128,8 @@ class WPLangUrls {
     public static function remove_slashes_from_urls_end_on_text($text){
         $separator = "~";
 
-        $hotels_pattern = "(" . implode("|", SITE_SLUGS_LIST) . ")";
-        $languages_pattern = "(" . implode("|", LANGUAGE_LIST) . ")";
+        $hotels_pattern = "(" . implode("|", WP_LANG_URL_CONFIG["slugs"]) . ")";
+        $languages_pattern = "(" . implode("|", WP_LANG_URL_CONFIG["langs"]) . ")";
 
         $patern2 = $separator . "(" . $_SERVER['HTTP_HOST'] . "/" . $languages_pattern . "/" . $hotels_pattern   . "[a-zA-Z0-9\/\-_]*)/([\"'])" . $separator;
         $replacement2 = "\\1\\4";
@@ -168,7 +176,7 @@ class WPLangUrls {
 
     function environment_is_defined(): bool
     {
-        if (!empty(SITE_SLUGS_LIST)) {
+        if (!empty(WP_LANG_URL_CONFIG["slugs"])) {
             return true;
         } else {
             return false;
