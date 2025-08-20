@@ -1,6 +1,11 @@
 <?php
 
-define("WP_LANG_URL_JSON_DIR_PATH",  WP_CONTENT_DIR . "/uploads/wp-lang-urls-data");
+if (defined('WP_CONTENT_DIR')) {
+    define("WP_LANG_URL_JSON_DIR_PATH",  WP_CONTENT_DIR . "/uploads/wp-lang-urls-data");
+} else {
+    define("WP_LANG_URL_JSON_DIR_PATH", "wp-content/uploads/wp-lang-urls-data");
+}
+
 define("WP_LANG_URL_JSON_FILE_PATH", WP_LANG_URL_JSON_DIR_PATH  . '/wp-lang-urls-data.json');
 
 wp_lang_urls_prepare_config_directory(WP_LANG_URL_JSON_DIR_PATH);
