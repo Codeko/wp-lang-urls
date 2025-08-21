@@ -3,7 +3,7 @@
 if (defined('WP_CONTENT_DIR')) {
     define("WP_LANG_URL_JSON_DIR_PATH",  WP_CONTENT_DIR . "/uploads/wp-lang-urls-data");
 } else {
-    define("WP_LANG_URL_JSON_DIR_PATH", "wp-content/uploads/wp-lang-urls-data");
+    define("WP_LANG_URL_JSON_DIR_PATH", ABSPATH . "wp-content/uploads/wp-lang-urls-data");
 }
 
 define("WP_LANG_URL_JSON_FILE_PATH", WP_LANG_URL_JSON_DIR_PATH  . '/wp-lang-urls-data.json');

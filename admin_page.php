@@ -171,7 +171,6 @@ class AdminPage
             </form>
         </div>
         <?php
-        var_dump(WP_LANG_URL_CONFIG);
     }
 
     function get_data_from_json()
